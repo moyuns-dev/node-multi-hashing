@@ -20,7 +20,7 @@
 #include "sha3/sph_whirlpool.h"
 #include "sha3/sph_sha2.h"
 
-#include "common.h"
+//#include "common.h"
 
 enum Algo {
 	BLAKE = 0,
