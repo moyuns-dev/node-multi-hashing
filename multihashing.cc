@@ -593,27 +593,6 @@ DECLARE_FUNC(yescrypt_bitzeny){
     SET_BUFFER_RETURN(output, 32);
 }
 
-DECLARE_FUNC(x16r){
-    DECLARE_SCOPE;
-
-    if (args.Length() < 1)
-        RETURN_EXCEPT("You must provide one argument.");
-
-   Local<Object> target = args[0]->ToObject();
-
-   if(!Buffer::HasInstance(target))
-       RETURN_EXCEPT("Argument should be a buffer object.");
-
-
-   char * input = Buffer::Data(target);
-   char output[32];
-
-
-   x16r_hash(input, output);
-
-    SET_BUFFER_RETURN(output, 32);
-}
-
 
 DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "bcrypt", bcrypt);
