@@ -31,6 +31,7 @@ extern "C" {
     #include "x11.h"
     #include "x13.h"
     #include "x15.h"
+    #include "x16r.h"
     #include "yespower/yespower.h"
     #include "yespower-1.0.1/yespower-1.0.1.h"
     #include "yescrypt/yescrypt.h"
@@ -132,6 +133,7 @@ using namespace v8;
  DECLARE_CALLBACK(x11, x11_hash, 32);
  DECLARE_CALLBACK(x13, x13_hash, 32);
  DECLARE_CALLBACK(x15, x15_hash, 32);
+ DECLARE_CALLBACK(x16r, x16r_hash, 32);
 
 
 DECLARE_FUNC(scrypt) {
@@ -591,6 +593,28 @@ DECLARE_FUNC(yescrypt_bitzeny){
     SET_BUFFER_RETURN(output, 32);
 }
 
+DECLARE_FUNC(x16r){
+    DECLARE_SCOPE;
+
+    if (args.Length() < 1)
+        RETURN_EXCEPT("You must provide one argument.");
+
+   Local<Object> target = args[0]->ToObject();
+
+   if(!Buffer::HasInstance(target))
+       RETURN_EXCEPT("Argument should be a buffer object.");
+
+
+   char * input = Buffer::Data(target);
+   char output[32];
+
+
+   x16r_hash(input, output);
+
+    SET_BUFFER_RETURN(output, 32);
+}
+
+
 DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "bcrypt", bcrypt);
     NODE_SET_METHOD(exports, "blake", blake);
@@ -621,6 +645,7 @@ DECLARE_INIT(init) {
     NODE_SET_METHOD(exports, "x11", x11);
     NODE_SET_METHOD(exports, "x13", x13);
     NODE_SET_METHOD(exports, "x15", x15);
+    NODE_SET_METHOD(exports, "x16", x16r);
     NODE_SET_METHOD(exports, "yespower", yespower);
     NODE_SET_METHOD(exports, "yespower_0_5_R8", yespower_0_5_R8);
     NODE_SET_METHOD(exports, "yespower_0_5_R8G", yespower_0_5_R8G);
